@@ -47,6 +47,8 @@ def linkify_directory(p, prev):
     links = []
     root = None
     for path, is_index in files_to_link(p):
+        # if we have reached the previous index, don't overwrite
+        # it with a newly generated link
         if prev and path == prev.path:
             links.append(prev)
             continue
