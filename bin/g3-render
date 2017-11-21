@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 
-from path import Path
+from pathlib import Path
 import markdown2
 import sys
+import json
+
+
+def get_config():
+    with open('_g3/config.json', 'r') as fp:
+        return json.load(fp)
 
 
 def main(path):
-    g3 = Path('_g3')
-    tmp, ext = (g3 / 'tmp' / path).splitext()
-    if ext != '.md':
+    path = Path(path)
+    if path.suffix != '.md':
         return
 
-    src = g3 / path
-    dst = tmp + '.render'
+    src = Path('_g3') / path
+    dst = Path('_g3/tmp') / (str(path.parent / path.stem) + '.render')
+    dst.parent.mkdir(exist_ok=True, parents=True)
 
     with src.open('r') as r:
         # skip past metadata
@@ -20,7 +26,8 @@ def main(path):
             if line.strip() == "":
                 break
         with dst.open('w') as w:
-            w.write(markdown2.markdown(r.read()))
+            extras = get_config().get('extras', [])
+            w.write(markdown2.markdown(r.read(), extras=extras))
 
 
 if __name__ == '__main__':

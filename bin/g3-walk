@@ -1,25 +1,32 @@
 #!/usr/bin/env python
 
-from path import Path
+from os.path import join
+from pathlib import Path
+from collections import deque
 import json
 
 
-def main(path):
-    p = Path(path)
-    with p.joinpath('config.json').open('r') as fp:
+def main():
+    with open('_g3/config.json', 'r') as fp:
         config = json.load(fp)
         ignorelist = config.get('ignore', [])
 
-    for k in p.walkfiles():
-        # remove the starting _g3/
-        parts = k.splitall()[2:]
-        k = Path.joinpath(*parts)
-        if parts[0] == 'tmp' or parts[0] == 'dst':
+    excluded_dirs = {Path('_g3/tmp'), Path('_g3/dst'), Path('_g3/static')}
+
+    # BFS traversal of the directory
+    q = deque([Path('_g3')])
+    while q:
+        p = q.popleft()
+        if p.is_dir():
+            if p in excluded_dirs:
+                continue
+            q.extend(p.iterdir())
             continue
-        if any(k.fnmatch(g) for g in ignorelist):
-            continue
-        print(k)
+
+        if not any(p.match(pat) for pat in ignorelist):
+            s = join(*p.parts[1:])
+            print(s)
 
 
 if __name__ == '__main__':
-    main('_g3')
+    main()

@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+import shutil
+import sys
+import json
+from pathlib import Path
+from pystache import parse, Renderer
+
+
+def render(values):
+    r = Renderer()
+    with open('_g3/skin.html', 'r') as fp:
+        return r.render(
+            parse(fp.read()),
+            values,
+            )
+
+
+def main(path):
+    path = Path(path)
+    # not a markdown file, just copy it
+    if path.suffix != '.md':
+        src = Path('_g3') / path
+        dst = Path('_g3/dst') / path
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(str(src), str(dst))
+        return
+
+    base = str(path.parent / path.stem)
+    dst = Path('_g3/dst') / (base + '.html')
+    dst.parent.mkdir(parents=True, exist_ok=True)
+
+    menu = Path('_g3/tmp') / (base + '.menu')
+    headers = Path('_g3/tmp') / (base + '.header')
+    content = Path('_g3/tmp') / (base + '.render')
+
+    with dst.open('w') as w:
+        data = json.load(headers.open('r'))
+        data['menu'] = menu.open('r').read()
+        data['content'] = content.open('r').read()
+        w.write(render(data))
+
+
+if __name__ == '__main__':
+    main(sys.argv[1])

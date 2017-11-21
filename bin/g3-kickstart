@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [ -e '_g3' ]; then
+    exit
+fi
+
+mkdir -p _g3
+mkdir -p _g3/static
+echo '{"ignore": ["skin.html", "config.json"]}' > _g3/config.json
+cat > _g3/skin.html <<- EOM
+<html>
+<head>
+  <meta charset='utf8'/>
+  <title>{{ title }}</title>
+  <style>
+    body     { margin: 5em auto; width: 55em; }
+    .nav     { float: left; width: 18em; }
+    .content { float: left; width: calc(100% - 18em); }
+  </style>
+</head>
+<body>
+  <div class='nav'>{{{ menu }}}</div>
+  <div class='content'>{{{ content }}}</div>
+</body>
+</html>
+EOM

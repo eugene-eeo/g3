@@ -1,37 +1,20 @@
 <html>
 <head>
-  <title>{{ title }}</title>
-  <style>
-body {
-  width: 55em;
-  margin: auto;
-}
-.nav {
-  float: left;
-  width: 18em;
-  font-size: 0.90em;
-  padding: 2em 0;
-}
-.header h1   { margin-bottom: 0; }
-.header span { margin: 0; display: block; }
-.header img  { width: 3em; height: 3em; margin-right: 1em; float: left; }
-.nav ul {
-  margin-top: 0;
-  padding-top: 0;
-}
-.content {
-  float: left;
-  width: calc(55em - 18em);
-}
-  </style>
+  <title>g3 - {{ title }}</title>
+  <meta charset='utf8'/>
+  <link rel='stylesheet' href='/static/style.css'/>
 </head>
 <body>
-  <div class='header'>
-    <img src='/static/icon.png' />
-    <h1>g3</h1>
+  <header>
+    <img src='/static/icon.png' align='left'/>
+    <h1>g3/</h1>
     <span>simple static site generator</span>
-  </div>
-  <div class='nav'>{{{ menu }}}</div>
-  <div class='content'>{{{ content }}}</div>
+  </header>
+  <nav>{{{ menu }}}</nav>
+  <article>{{{ content }}}</article>
+  <footer>
+    Written by <a href='https://github.com/eugene-eeo'>Eeo Jun</a>.
+    Built by <a href='/'>g3</a>.
+  </footer>
 </body>
 </html>

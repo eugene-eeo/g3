@@ -1,3 +1,4 @@
 {
-    "ignore": ["config.json", "skin.html"]
+    "ignore": ["config.json", "skin.html"],
+    "extras": ["smarty-pants"]
 }
