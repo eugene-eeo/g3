@@ -26,28 +26,23 @@ In a directory and the `_g3` directory will be created if one doesn't exist.
  some `g3` programs to generate HTML files. For more information on writing your
  own skins for `g3` see the page on [writing your own skins](/manual/skins.html).
 
-It is important to be working in the right directory, which is the directory
-which contains the `_g3` folder. For instance:
+## Important note
 
-    $ cwd
-    /.../blog
+It is important to be working in the right directory. From this point on all
+commands will be assumed to run in the correct directory:
+
     $ ls
-    README
-    bin
-    _g3
-    ...
+    _g3/	...
 
-`/.../blog` is the directory that we want to work in. From this point on we will
-assume that all commands _are ran in the right directory_.
+## Compiling
 
 `g3` is an almost 1-to-1 mapping of your files in the `_g3` directory to an
 output directory with two exceptions: **the `_g3/dst` and `_g3/tmp` directories
 are reserved for use by all `g3` programs**. They contain the generated website
 and the intermediate build files, respectively.
 
-For instance the directory on the left will generate the directory on the
-right when `g3-build` is called. All `.md` files will be transformed into
-`.html` files with the skin applied.
+Run `g3-build`. All `.md` files will be transformed into `.html` files with the
+skin applied. Non `.md` files will just be copied as-is to the output directory.
 
     _g3/                |  _g3/
         config.json     |      config.json
@@ -62,7 +57,7 @@ right when `g3-build` is called. All `.md` files will be transformed into
                         |              index.md
                         |              page.md
 
-One more caveat – each `.md` file must look like the following:
+Each `.md` file must look like the following:
 
     {
         "title": "Some Title"

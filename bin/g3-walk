@@ -23,9 +23,9 @@ def main():
             q.extend(p.iterdir())
             continue
 
+        s = Path(join(*p.parts[1:]))
         if not any(p.match(pat) for pat in ignorelist):
-            s = join(*p.parts[1:])
-            print(s)
+            print(str(s))
 
 
 if __name__ == '__main__':

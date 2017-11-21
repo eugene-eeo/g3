@@ -7,9 +7,10 @@ import json
 
 
 class Link:
-    def __init__(self, target, text):
+    def __init__(self, target, text, path):
         self.target = target
         self.text = text
+        self.path = path
         self.sub = []
 
     def to_html(self):
@@ -17,7 +18,7 @@ class Link:
         if not self.sub:
             return a
         g = [a, '<ul>']
-        for l in self.sub:
+        for l in sorted(self.sub, key=lambda l: l.text):
             g.append('<li>%s</li>' % l.to_html())
         g.append('</ul>')
         return '\n'.join(g)
@@ -35,26 +36,31 @@ def to_target(p):
 
 def files_to_link(p):
     for f in p.iterdir():
-        if f.match('*.header'):
-            if f.stem == 'index':
-                continue
-            yield f.parent / f.stem
+        if f.is_file() and f.match('*.header'):
+            yield f.parent / f.stem, f.stem == 'index'
+
         if f.is_dir():
-            yield f / 'index'
+            yield f / 'index', False
 
 
-def linkify_directory(p, next):
+def linkify_directory(p, prev):
     links = []
-    next_root = None
-    for base in files_to_link(p):
+    root = None
+    for path, is_index in files_to_link(p):
+        if prev and path == prev.path:
+            links.append(prev)
+            continue
         link = Link(
-            target=to_target(strip_tmp_ext(base)) + '.html',
-            text=json.load(open(str(base) + '.header'))['title'],
+            target=to_target(strip_tmp_ext(path)) + '.html',
+            text=json.load(open(str(path) + '.header'))['title'],
+            path=path,
             )
+        if is_index:
+            link.sub = links
+            root = link
+            continue
         links.append(link)
-        if next == base.parent:
-            next_root = link
-    return links, next_root
+    return root
 
 
 def main(path):
@@ -64,23 +70,16 @@ def main(path):
 
     dst = Path('_g3/tmp') / (str(path.parent / path.stem) + '.menu')
     parts = [Path('_g3/tmp')] + list(path.parts[:-1])
-    root = Link(
-        target='/index.html',
-        text=json.load(open('_g3/tmp/index.header', 'r'))['title'],
-        )
-    link = root
+    root = None
 
     for i in range(len(parts)):
-        next = None
-        if i + 1 < len(parts):
-            next = Path.joinpath(*parts[:i+2])
-        link.sub, link = linkify_directory(
-            Path.joinpath(*parts[:i+1]),
-            next,
+        root = linkify_directory(
+            Path.joinpath(*parts[:len(parts) - i]),
+            root,
             )
 
     with dst.open('w') as f:
-        f.write(root.to_html())
+        f.write('' if root is None else root.to_html())
 
 
 if __name__ == '__main__':
