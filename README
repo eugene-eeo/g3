@@ -1,0 +1,12 @@
+
+                        ┌────────┐
+                        │   g3   ├┐
+                        └┬───────┘│
+                         └────────┘
+
+    An experimental static website generator toolchain both
+    inspired by and in the spirit of ussm[1]. Also a quest
+    to develop a website generation tool that I'll actually
+    start using in a non ad-hoc way.
+
+    [1]: http://loup-vaillant.fr/projects/ussm/

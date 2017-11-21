@@ -1,0 +1,95 @@
+#!/usr/bin/env python
+
+from path import Path
+from itertools import chain
+import sys
+import json
+
+
+def listify(links):
+    g = ['<ul>']
+    for l in links:
+        g.append('<li>%s</li>' % l.to_html())
+    g.append('</ul>')
+    return '\n'.join(g)
+
+
+class Link:
+    def __init__(self, target, text):
+        self.target = target
+        self.text = text
+        self.sub = []
+
+    def to_html(self):
+        a = "<a href='%s'>%s</a>" % (self.target, self.text)
+        if not self.sub:
+            return a
+        ul = listify(self.sub)
+        return '\n'.join((a, ul))
+
+
+def strip_tmp_ext(p):
+    return Path(p[len('_g3/tmp/'):]).splitext()[0]
+
+
+def to_target(p):
+    _, *rest = p.splitall()
+    return '/' + '/'.join(rest)
+
+
+def files_to_link(p):
+    for f in p.files('*.header'):
+        f, _ = f.splitext()
+        if f.basename() == 'index':
+            continue
+        yield f
+
+    for d in p.dirs():
+        yield d / 'index'
+
+
+def linkify_directory(p, next):
+    links = []
+    next_root = None
+    for d in files_to_link(p):
+        link = Link(
+            target=to_target(strip_tmp_ext(d)) + '.html',
+            text=json.load((d + '.header').open('r'))['title'],
+            )
+        links.append(link)
+        if next == d.splitpath()[0]:
+            next_root = link
+    return links, next_root
+
+
+def main(path):
+    path = Path(path)
+    base, ext = path.splitext()
+    if ext != '.md':
+        return
+
+    dst = Path('_g3/tmp') / base + '.menu'
+    parts = [Path('_g3/tmp')] + path.splitall()[1:-1]
+    root = Link(
+        target='/index.html',
+        text=json.load(open('_g3/tmp/index.header', 'r'))['title'],
+        )
+    link = root
+
+    for i, _ in enumerate(parts):
+        next = None
+        if i + 1 < len(parts):
+            next = Path.joinpath(*parts[:i+2])
+        links, next_root = linkify_directory(
+            Path.joinpath(*parts[:i+1]),
+            next,
+            )
+        link.sub = links
+        link = next_root
+
+    with dst.open('w') as f:
+        f.write(root.to_html())
+
+
+if __name__ == '__main__':
+    main(sys.argv[1])

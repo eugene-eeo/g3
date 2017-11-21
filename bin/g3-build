@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+for line in $(bin/g3-walk); do
+    bin/g3-header "$line"
+    bin/g3-render "$line"
+done
+
+for line in $(bin/g3-walk); do
+    bin/g3-menu "$line"
+    bin/g3-assemble "$line"
+done
+
+cp -r _g3/static/ _g3/dst/static/
+rm -rf _g3/tmp

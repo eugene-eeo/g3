@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+from path import Path
+import json
+
+
+def main(path):
+    p = Path(path)
+    with p.joinpath('config.json').open('r') as fp:
+        config = json.load(fp)
+        ignorelist = config.get('ignore', [])
+
+    for k in p.walkfiles():
+        # remove the starting _g3/
+        parts = k.splitall()[2:]
+        k = Path.joinpath(*parts)
+        if parts[0] == 'tmp' or parts[0] == 'dst':
+            continue
+        if any(k.fnmatch(g) for g in ignorelist):
+            continue
+        print(k)
+
+
+if __name__ == '__main__':
+    main('_g3')

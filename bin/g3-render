@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+from path import Path
+import markdown2
+import sys
+
+
+def main(path):
+    g3 = Path('_g3')
+    tmp, ext = (g3 / 'tmp' / path).splitext()
+    if ext != '.md':
+        return
+
+    src = g3 / path
+    dst = tmp + '.render'
+
+    with src.open('r') as r:
+        # skip past metadata
+        for line in r:
+            if line.strip() == "":
+                break
+        with dst.open('w') as w:
+            w.write(markdown2.markdown(r.read()))
+
+
+if __name__ == '__main__':
+    main(sys.argv[1])
