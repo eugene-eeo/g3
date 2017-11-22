@@ -3,16 +3,12 @@
 import sys
 import json
 from pathlib import Path
-from pystache import parse, Renderer
+from pystache import render as _render
 
 
 def render(values):
-    r = Renderer()
     with open('_g3/skin.html', 'r') as fp:
-        return r.render(
-            parse(fp.read()),
-            values,
-            )
+        return _render(fp.read(), values)
 
 
 def main(path):

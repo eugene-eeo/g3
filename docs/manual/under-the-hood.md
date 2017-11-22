@@ -2,8 +2,6 @@
   "title": "Under the Hood"
 }
 
-# Under the Hood
-
 Under the hood, `g3` is simply a collection of programs to build a static
 website, held together by some shell scripts (_get off my lawn_). When
 looking and static site generation and writing `g3` I wanted to write
@@ -22,6 +20,7 @@ The following tools are mainly for collecting and building:
  - `g3-html` – combines the `.header`, `.menu`, and `.render` files and
    renders the template. Writes to `_g3/dst/<ref>.html` if `<ref>`
    is a markdown file, else just copies it to `_g3/dst/<ref>`.
+ - `g3-copy` – just copies the file to `_g3/dst`.
  - `g3-walk` – recursively lists files in the directory, respecting the
    options in `config.json`.
  - `g3-build` – a shell script that combines the tools and builds the

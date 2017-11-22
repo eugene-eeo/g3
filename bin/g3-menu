@@ -52,9 +52,13 @@ def linkify_directory(p, prev):
             links.append(prev)
             continue
         real = strip_tmp(path)
+        # append a trailing / if we are looking at index.header
+        text = json.load(open(str(path) + '.header'))['title']
+        if path.stem == 'index':
+            text = text + '/'
         link = Link(
             target=to_target(real.parent / real.stem) + '.html',
-            text=json.load(open(str(path) + '.header'))['title'],
+            text=text,
             path=path,
             )
         if is_index:

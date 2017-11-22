@@ -2,8 +2,6 @@
   "title": "Writing skins"
 }
 
-# Writing skins
-
 A skin is simply the `_g3/skin.html` file. It must be a valid [mustache](https://mustache.github.io)
 template. An example skin:
 

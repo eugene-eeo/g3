@@ -2,8 +2,6 @@
   "title": "Configuration Files"
 }
 
-# Configuration Files
-
 Configuration files are the `_g3/config.json` files, which must contain valid
 JSON. An example config is the following:
 

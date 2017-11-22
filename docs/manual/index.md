@@ -2,8 +2,6 @@
   "title": "Manual"
 }
 
-# Manual
-
 `g3` is a collection of programs that generate a static site. As such `g3` aims to make
 it easy to compose them together to play well with your own workflow/project layout.
 However all `g3` programs assume that the directory are executed from has a `_g3` folder
@@ -68,3 +66,9 @@ Each `.md` file must look like the following:
 JSON metadata must start from the first line of the file, separated by a
 newline from the Markdown content. The metadata must contain at least the
 `title` key.
+
+## Viewing Results
+
+You should host a http-server that points to `_g3/dst`. You can still
+view the files as-is without a http-server, but the links generated
+in the nav menu will not work correctly.

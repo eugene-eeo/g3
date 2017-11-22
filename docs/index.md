@@ -2,8 +2,6 @@
   "title": "Home"
 }
 
-# Home
-
 Welcome to the homepage of `g3`, the simple static site generator. _The 3 represents
 the 3 words that start with 's' in "simple static ..."._ `g3` can be seen as a
 collection of scripts that can be composed together to generate a static website.
@@ -13,10 +11,10 @@ exist. I just like building my own.
 
 Currently the workflow is:
 
+    $ source alias.sh
     $ vim # or emacs
-    $ bin/g3-build
-    $ cd _g3/dst
-    $ python -m http.server 8800
+    $ g3-build
+    $ http-server _g3/dst -p 8800 -a localhost -s
 
 ## Features
 

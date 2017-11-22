@@ -11,7 +11,10 @@
     <span>simple static site generator</span>
   </header>
   <nav>{{{ menu }}}</nav>
-  <article>{{{ content }}}</article>
+  <article>
+    <h1>{{ title }}</h1>
+    {{{ content }}}
+  </article>
   <footer>
     Written by <a href='https://github.com/eugene-eeo'>Eeo Jun</a>.
     Built by <a href='/'>g3</a>.
