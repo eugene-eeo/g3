@@ -16,11 +16,10 @@ def main(path):
     if path.suffix != '.md':
         return
 
-    src = Path('_g3') / path
     dst = Path('_g3/tmp') / (str(path.parent / path.stem) + '.render')
     dst.parent.mkdir(exist_ok=True, parents=True)
 
-    with src.open('r') as r:
+    with path.open('r') as r:
         # skip past metadata
         for line in r:
             if line.strip() == "":

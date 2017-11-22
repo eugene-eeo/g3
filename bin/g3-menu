@@ -24,9 +24,8 @@ class Link:
         return '\n'.join(g)
 
 
-def strip_tmp_ext(p):
+def strip_tmp(p):
     # strip the leading _g3/tmp from p
-    p = p.parent / p.stem
     return Path(join(*p.parts[2:]))
 
 
@@ -52,8 +51,9 @@ def linkify_directory(p, prev):
         if prev and path == prev.path:
             links.append(prev)
             continue
+        real = strip_tmp(path)
         link = Link(
-            target=to_target(strip_tmp_ext(path)) + '.html',
+            target=to_target(real.parent / real.stem) + '.html',
             text=json.load(open(str(path) + '.header'))['title'],
             path=path,
             )

@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-for line in $(bin/g3-walk); do
-    bin/g3-header "$line" &
-    bin/g3-render "$line" &
+for line in $(g3-walk); do
+    g3-header "$line" &
+    g3-render "$line" &
 done
 wait
 
-for line in $(bin/g3-walk); do
-    bin/g3-menu "$line"
-    bin/g3-html "$line"
+for line in $(g3-walk); do
+    g3-menu "$line"
+    g3-html "$line"
 done
-
-cp -r _g3/static/ _g3/dst/static/
-rm -rf _g3/tmp

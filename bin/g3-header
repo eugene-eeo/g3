@@ -4,15 +4,15 @@ import sys
 import json
 from path import Path
 
+
 def main(path):
-    base, ext = Path(path).splitext()
+    path = Path(path)
+    base, ext = path.splitext()
     if ext != '.md':
         return
 
-    src = Path('_g3') / path
     dst = Path('_g3') / 'tmp' / base + '.header'
-
-    with src.open('r') as f:
+    with path.open('r') as f:
         b = []
         for line in f:
             if not line.strip():

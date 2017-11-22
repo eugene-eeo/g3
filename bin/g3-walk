@@ -11,21 +11,17 @@ def main():
         config = json.load(fp)
         ignorelist = config.get('ignore', [])
 
-    excluded_dirs = {Path('_g3/tmp'), Path('_g3/dst'), Path('_g3/static')}
-
     # BFS traversal of the directory
-    q = deque([Path('_g3')])
+    q = deque([Path('.')])
     while q:
         p = q.popleft()
         if p.is_dir():
-            if p in excluded_dirs:
+            if p == Path('_g3'):
                 continue
             q.extend(p.iterdir())
             continue
-
-        s = Path(join(*p.parts[1:]))
         if not any(p.match(pat) for pat in ignorelist):
-            print(str(s))
+            print(str(p))
 
 
 if __name__ == '__main__':

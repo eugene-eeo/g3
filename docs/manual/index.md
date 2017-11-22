@@ -12,11 +12,10 @@ with the following layout:
     _g3/
         config.json
         skin.html
-        static/
 
 To get started easily and generate the required directories/files you can run:
 
-    $ bin/g3-kickstart
+    $ g3-kickstart
 
 In a directory and the `_g3` directory will be created if one doesn't exist.
 
@@ -44,18 +43,18 @@ and the intermediate build files, respectively.
 Run `g3-build`. All `.md` files will be transformed into `.html` files with the
 skin applied. Non `.md` files will just be copied as-is to the output directory.
 
-    _g3/                |  _g3/
-        config.json     |      config.json
-        skin.html       |      skin.html
-        static/         |      ...
-            icon.png    |      dst/
-            style.css   |          static/
-        index.md        |              icon.png
-        topic/          |              style.css
-            index.md    |          index.md
-            page.md     |          topic/
-                        |              index.md
-                        |              page.md
+    _g3/                |  ...
+        config.json     |  _g3/
+        skin.html       |      config.json
+    static/             |      skin.html
+        icon.png        |      dst/
+        style.css       |          static/
+    index.md            |              icon.png
+    topic/              |              style.css
+        index.md        |          index.html
+        page.md         |          topic/
+                        |              index.html
+                        |              page.html
 
 Each `.md` file must look like the following:
 

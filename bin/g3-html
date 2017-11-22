@@ -20,10 +20,9 @@ def main(path):
     path = Path(path)
     # not a markdown file, just copy it
     if path.suffix != '.md':
-        src = Path('_g3') / path
         dst = Path('_g3/dst') / path
         dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(str(src), str(dst))
+        shutil.copyfile(str(path), str(dst))
         return
 
     base = str(path.parent / path.stem)

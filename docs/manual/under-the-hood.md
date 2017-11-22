@@ -9,7 +9,7 @@ website, held together by some shell scripts (_get off my lawn_). When
 looking and static site generation and writing `g3` I wanted to write
 something unix-y so here is the amalgamation I came up with.
 
-Given some file in `_g3/<ref>`, the tools below will save their output to
+Given some file `<ref>`, the tools below will save their output to
 `_g3/tmp/<ref>.<tool>`, where `<tool>` is determined by their name, e.g.
 `g3-header` saves to `<ref>.header`.
 
@@ -20,7 +20,7 @@ Given some file in `_g3/<ref>`, the tools below will save their output to
 The following tools are mainly for collecting and building:
 
  - `g3-html` – combines the `.header`, `.menu`, and `.render` files and
-   renders the template. Writes to `_g3/dst/<ref>.html` if `_g3/<ref>`
+   renders the template. Writes to `_g3/dst/<ref>.html` if `<ref>`
    is a markdown file, else just copies it to `_g3/dst/<ref>`.
  - `g3-walk` – recursively lists files in the directory, respecting the
    options in `config.json`.
