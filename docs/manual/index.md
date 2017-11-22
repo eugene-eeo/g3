@@ -4,8 +4,8 @@
 
 `g3` is a collection of programs that generate a static site. As such `g3` aims to make
 it easy to compose them together to play well with your own workflow/project layout.
-However all `g3` programs assume that the directory are executed from has a `_g3` folder
-with the following layout:
+However all `g3` programs will assume that the directory are executed from has a
+`_g3` folder with the following layout:
 
     _g3/
         config.json

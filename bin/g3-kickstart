@@ -4,8 +4,7 @@ if [ -e '_g3' ]; then
     exit
 fi
 
-mkdir -p _g3
-mkdir -p _g3/static
+mkdir _g3
 echo '{"ignore": ["skin.html", "config.json"]}' > _g3/config.json
 cat > _g3/skin.html <<- EOM
 <html>

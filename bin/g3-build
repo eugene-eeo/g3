@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
+trap 'exit' ERR
 
 for line in $(g3-walk); do
     case "$line" in
-        *.md) g3-header "$line" &
-              g3-render "$line" & ;;
+        *.md) g3-header "$line"
+              g3-render "$line" ;;
         *) g3-copy "$line"
     esac
 done
-wait
 
 for line in $(g3-walk); do
     if [[ $line = *.md ]]; then

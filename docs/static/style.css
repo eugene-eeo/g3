@@ -1,6 +1,7 @@
 body {
   width: 55em;
   margin: 3em auto;
+  font-family: sans-serif;
 }
 
 header      { margin-bottom: 1em; }

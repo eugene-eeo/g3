@@ -7,9 +7,9 @@ website, held together by some shell scripts (_get off my lawn_). When
 looking and static site generation and writing `g3` I wanted to write
 something unix-y so here is the amalgamation I came up with.
 
-Given some file `<ref>`, the tools below will save their output to
-`_g3/tmp/<ref>.<tool>`, where `<tool>` is determined by their name, e.g.
-`g3-header` saves to `<ref>.header`.
+Given some file `$ref`, the tools below will save their output to
+`_g3/tmp/$ref.$tool`, where `$tool` is determined by their name, e.g.
+`g3-header` saves to `$ref.header`.
 
  - `g3-header` – extracts the metadata section of `.md` files.
  - `g3-render` – renders the actual markdown (after the metadata chunk).
