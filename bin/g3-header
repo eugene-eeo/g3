@@ -6,8 +6,6 @@ from pathlib import Path
 
 def main(path):
     path = Path(path)
-    if path.suffix != '.md':
-        return
 
     dst = Path('_g3/tmp') / path.parent / (path.stem + '.header')
     dst.parent.mkdir(parents=True, exist_ok=True)

@@ -33,15 +33,16 @@ commands will be assumed to run in the correct directory:
     $ ls
     _g3/	...
 
+When `g3` is running, it is advised **not** to touch the `_g3/tmp` or `_g3/dst`
+directories since they hold the temporary build files and the compiled website,
+respectively.
+
 ## Compiling
 
-`g3` is an almost 1-to-1 mapping of your files in the `_g3` directory to an
-output directory with two exceptions: **the `_g3/dst` and `_g3/tmp` directories
-are reserved for use by all `g3` programs**. They contain the generated website
-and the intermediate build files, respectively.
-
-Run `g3-build`. All `.md` files will be transformed into `.html` files with the
-skin applied. Non `.md` files will just be copied as-is to the output directory.
+Run `g3-build` and you'll notice that `g3` is an almost 1-to-1 mapping of your
+files in the directory to `_g3/dst`. All `.md` files will be transformed into `.html`
+files with the skin applied. Non `.md` files will just be copied as-is to the
+output directory.
 
     _g3/                |  ...
         config.json     |  _g3/

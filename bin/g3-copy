@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+mkdir -p "_g3/tmp/$(dirname "$1")"
+cp "$1" "_g3/tmp/$1"

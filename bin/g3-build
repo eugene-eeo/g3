@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
 for line in $(g3-walk); do
-    g3-header "$line" &
-    g3-render "$line" &
+    case "$line" in
+        *.md) g3-header "$line" &
+              g3-render "$line" & ;;
+        *) g3-copy "$line"
+    esac
 done
 wait
 
 for line in $(g3-walk); do
-    g3-menu "$line"
-    g3-html "$line"
+    if [[ $line = *.md ]]; then
+        g3-menu "$line"
+        g3-html "$line"
+    fi
 done

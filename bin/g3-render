@@ -13,9 +13,6 @@ def get_config():
 
 def main(path):
     path = Path(path)
-    if path.suffix != '.md':
-        return
-
     dst = Path('_g3/tmp') / (str(path.parent / path.stem) + '.render')
     dst.parent.mkdir(exist_ok=True, parents=True)
 
