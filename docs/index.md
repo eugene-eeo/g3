@@ -6,8 +6,8 @@ Welcome to the homepage of `g3`, the simple static site generator. _The 3 repres
 the 3 words that start with 's' in "simple static ..."._ `g3` can be seen as a
 collection of scripts that can be composed together to generate a static website.
 It is inspired by the excellent [ussm](http://loup-vaillant.fr/projects/ussm/).
-Before you say it, I know that [Jekyll](https://jekyllrb.com/) and [Pelican](https://blog.getpelican.com/)
-exist. I just like building my own.
+I know that [Jekyll](https://jekyllrb.com/) and [Pelican](https://blog.getpelican.com/)
+exist, but I just like building my own.
 
 Currently the workflow is:
 

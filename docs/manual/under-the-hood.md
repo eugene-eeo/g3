@@ -9,7 +9,8 @@ something unix-y so here is the amalgamation I came up with.
 
 Given some file `$ref`, the tools below will save their output to
 `_g3/tmp/$ref.$tool`, where `$tool` is determined by their name, e.g.
-`g3-header` saves to `$ref.header`.
+`g3-header` saves to `$ref.header`. If no file is passed as arguments
+then the paths are taken from stdin.
 
  - `g3-header` – extracts the metadata section of `.md` files.
  - `g3-render` – renders the actual markdown (after the metadata chunk).

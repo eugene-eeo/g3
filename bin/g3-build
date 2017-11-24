@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 trap 'exit' ERR
 
-for line in $(g3-walk | g3-boring); do
-    g3-copy $line
+for line in $(g3-walk | grep -v '\.md$'); do
+    g3-copy "$line"
 done
 
-md_index=$(g3-walk | g3-md)
+md_index=$(g3-walk | grep '\.md$')
 
 echo "$md_index" | g3-header
 echo "$md_index" | g3-render

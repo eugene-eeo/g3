@@ -38,8 +38,10 @@ def files_to_link(p):
         if f.is_file() and f.match('*.header'):
             yield f.parent / f.stem, f.stem == 'index'
 
-        if f.is_dir() and (f / 'index.header').exists():
-            yield f / 'index', False
+        if f.is_dir():
+            g = (f / 'index.header')
+            if g.exists() and g.is_file():
+                yield f / 'index', False
 
 
 def linkify_directory(p, prev):
