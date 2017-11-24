@@ -11,22 +11,33 @@ def render(values):
         return _render(fp.read(), values)
 
 
-def main(path):
-    path = Path(path)
+def html(path, dst=None):
     base = str(path.parent / path.stem)
-    dst = Path('_g3/dst') / (base + '.html')
-    dst.parent.mkdir(parents=True, exist_ok=True)
+
+    if dst is None:
+        path = Path('_g3/dst') / (base + '.html')
+        path.parent.mkdir(parents=True, exist_ok=True)
+        dst = path.open('w')
 
     menu = Path('_g3/tmp') / (base + '.menu')
     headers = Path('_g3/tmp') / (base + '.header')
     content = Path('_g3/tmp') / (base + '.render')
 
-    with dst.open('w') as w:
+    with dst:
         data = json.load(headers.open('r'))
         data['menu'] = menu.open('r').read()
         data['content'] = content.open('r').read()
-        w.write(render(data))
+        dst.write(render(data))
+
+
+def main():
+    if len(sys.argv) >= 2:
+        html(Path(sys.argv[1]), sys.stdout)
+        return
+
+    for path in sys.stdin:
+        html(Path(path.strip()))
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()

@@ -4,18 +4,25 @@ import sys
 from pathlib import Path
 
 
-def main(path):
-    path = Path(path)
+def extract(r, w):
+    for line in r:
+        if not line.strip():
+            break
+        w.write(line)
 
-    dst = Path('_g3/tmp') / path.parent / (path.stem + '.header')
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('r') as r:
-        with dst.open('w') as w:
-            for line in r:
-                if not line.strip():
-                    break
-                w.write(line)
+
+def main():
+    if len(sys.argv) >= 2:
+        extract(Path(sys.argv[1]).open('r'), sys.stdout)
+        return
+
+    for path in sys.stdin:
+        src = Path(path.rstrip('\n'))
+        dst = Path('_g3/tmp') / src.parent / (src.stem + '.header')
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        with src.open('r') as r, dst.open('w') as w:
+            extract(r, w)
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()

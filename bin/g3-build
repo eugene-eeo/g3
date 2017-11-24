@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
 trap 'exit' ERR
 
-for line in $(g3-walk); do
-    case "$line" in
-        *.md) g3-header "$line"
-              g3-render "$line" ;;
-        *) g3-copy "$line"
-    esac
+for line in $(g3-walk | g3-boring); do
+    g3-copy $line
 done
 
-for line in $(g3-walk); do
-    if [[ $line = *.md ]]; then
-        g3-menu "$line"
-        g3-html "$line"
-    fi
-done
+md_index=$(g3-walk | g3-md)
+
+echo "$md_index" | g3-header
+echo "$md_index" | g3-render
+echo "$md_index" | g3-menu
+echo "$md_index" | g3-html

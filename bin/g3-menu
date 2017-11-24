@@ -69,9 +69,7 @@ def linkify_directory(p, prev):
     return root
 
 
-def main(path):
-    path = Path(path)
-    dst = Path('_g3/tmp') / (str(path.parent / path.stem) + '.menu')
+def menu(path, dst):
     parts = [Path('_g3/tmp')] + list(path.parts[:-1])
     root = None
 
@@ -81,9 +79,22 @@ def main(path):
             root,
             )
 
-    with dst.open('w') as f:
-        f.write('' if root is None else root.to_html())
+    dst.write('' if root is None else root.to_html())
+
+
+def main():
+    if len(sys.argv) >= 2:
+        menu(Path(sys.argv[1]), sys.stdout)
+        return
+
+    for src in sys.stdin:
+        src = src.strip()
+        src = Path(src)
+        dst = Path('_g3/tmp') / (str(src.parent / src.stem) + '.menu')
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        with dst.open('w') as w:
+            menu(src, w)
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()

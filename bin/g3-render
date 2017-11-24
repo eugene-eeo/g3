@@ -11,20 +11,28 @@ def get_config():
         return json.load(fp)
 
 
-def main(path):
-    path = Path(path)
-    dst = Path('_g3/tmp') / (str(path.parent / path.stem) + '.render')
-    dst.parent.mkdir(exist_ok=True, parents=True)
+def render(src, dst):
+    # skip past metadata
+    for line in src:
+        if line.strip() == "":
+            break
+    extras = get_config().get('extras', [])
+    dst.write(markdown2.markdown(src.read(), extras=extras))
 
-    with path.open('r') as r:
-        # skip past metadata
-        for line in r:
-            if line.strip() == "":
-                break
-        with dst.open('w') as w:
-            extras = get_config().get('extras', [])
-            w.write(markdown2.markdown(r.read(), extras=extras))
+
+def main():
+    if len(sys.argv) >= 2:
+        render(Path(sys.argv[1]).open('r'), sys.stdout)
+        return
+
+    for path in sys.stdin:
+        path = path.strip()
+        src = Path(path)
+        dst = Path('_g3/tmp') / src.parent / (str(src.stem) + '.render')
+        dst.parent.mkdir(exist_ok=True, parents=True)
+        with src.open('r') as r, dst.open('w') as w:
+            render(r, w)
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()
