@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+from pathlib import Path
+from os.path import join
+import json
+import sys
+
+
+class Link():
+    def __init__(self, text, path):
+        self.path = path
+        self.text = text
+        self.sub = []
+
+    def to_json(self):
+        return {
+            "path": "/" + self.path + ".html",
+            "text": self.text + ("/" if self.sub else ""),
+            "sub":  [l.to_json() for l in self.sub],
+            }
+
+    @classmethod
+    def from_path(cls, p):
+        return cls(
+            json.load(p.open('r'))['title'],
+            strip_tmp(p.parent / p.stem),
+            )
+
+
+def strip_tmp(p):
+    # strip the leading _g3/tmp from p, and convert to string
+    return join(*p.parts[2:])
+
+
+def links(p):
+    for f in p.glob('*.header'):
+        if f.is_file() and f.stem != 'index':
+            yield Link.from_path(f)
+
+
+def traverse(p):
+    r = None
+    Q = [(r, p)]
+    while Q:
+        prev, p = Q.pop()
+        f = p / "index.header"
+        if f.exists() and f.is_file():
+            root = Link.from_path(f)
+            if r is None:
+                r = root
+            else:
+                prev.sub.append(root)
+            root.sub = list(links(p))
+            Q.extend((root, d) for d in p.iterdir() if d.is_dir())
+    return r
+
+
+if __name__ == '__main__':
+    u = traverse(Path('_g3/tmp'))
+    with Path('_g3/tmp/title-index').open('w') as f:
+        json.dump(u.to_json(), f)

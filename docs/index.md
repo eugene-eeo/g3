@@ -26,5 +26,6 @@ Currently the workflow is:
 ## Todo
 
  - Write some tests
- - Speed this thing up! (Maybe rewrite some parts in Go)
  - Complete this manual
+ - More robust error handling
+ - Better error messages

@@ -9,7 +9,7 @@ something unix-y so here is the amalgamation I came up with.
 
 Given some file `$ref`, the tools below will save their output to
 `_g3/tmp/$ref.$tool`, where `$tool` is determined by their name, e.g.
-`g3-header` saves to `$ref.header`. If no file is passed as arguments
+`g3-header` saves to `$ref.header`. If they are called with no arguments
 then the paths are taken from stdin.
 
  - `g3-header` – extracts the metadata section of `.md` files.
@@ -18,6 +18,8 @@ then the paths are taken from stdin.
 
 The following tools are mainly for collecting and building:
 
+ - `g3-title-index` – generates a JSON file containing an index of the
+   titles of markdown documents. The file generated is used by `g3-menu`.
  - `g3-html` – combines the `.header`, `.menu`, and `.render` files and
    renders the template. Writes to `_g3/dst/<ref>.html` if `<ref>`
    is a markdown file, else just copies it to `_g3/dst/<ref>`.

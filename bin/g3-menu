@@ -7,95 +7,87 @@ import json
 
 
 class Link:
-    def __init__(self, target, text, path):
-        self.target = target
+    __slots__ = ('text', 'path', 'sub')
+
+    def __init__(self, text, path, sub):
         self.text = text
         self.path = path
-        self.sub = []
+        self.sub = sub
 
     def to_html(self):
-        a = "<a href='%s'>%s</a>" % (self.target, self.text)
-        if not self.sub:
-            return a
-        g = [a, '<ul>']
-        for l in sorted(self.sub, key=lambda l: l.text):
-            g.append('<li>%s</li>' % l.to_html())
-        g.append('</ul>')
-        return '\n'.join(g)
+        a = "<a href='%s'>%s</a>" % (self.path, self.text)
+        return a
 
-
-def strip_tmp(p):
-    # strip the leading _g3/tmp from p
-    return Path(join(*p.parts[2:]))
-
-
-def to_target(p):
-    return '/' + str(p)
-
-
-def files_to_link(p):
-    for f in p.iterdir():
-        if f.is_file() and f.match('*.header'):
-            yield f.parent / f.stem, f.stem == 'index'
-
-        if f.is_dir():
-            g = (f / 'index.header')
-            if g.exists() and g.is_file():
-                yield f / 'index', False
-
-
-def linkify_directory(p, prev):
-    links = []
-    root = None
-    for path, is_index in files_to_link(p):
-        # if we have reached the previous index, don't overwrite
-        # it with a newly generated link
-        if prev and path == prev.path:
-            links.append(prev)
-            continue
-        real = strip_tmp(path)
-        # append a trailing / if we are looking at index.header
-        text = json.load(open(str(path) + '.header'))['title']
-        if path.stem == 'index':
-            text = text + '/'
-        link = Link(
-            target=to_target(real.parent / real.stem) + '.html',
-            text=text,
-            path=path,
+    @classmethod
+    def from_json(cls, data):
+        return cls(
+            text=data['text'],
+            path=data['path'],
+            sub=[cls.from_json(d) for d in data['sub']],
             )
-        if is_index:
-            link.sub = links
-            root = link
-            continue
-        links.append(link)
-    return root
 
 
-def menu(path, dst):
-    parts = [Path('_g3/tmp')] + list(path.parts[:-1])
-    root = None
+class Menu:
+    def __init__(self, link, sub_links):
+        self.link = link
+        self.sub_links = sub_links
+
+    def chunks(self):
+        yield self.link.to_html()
+        if not self.sub_links:
+            return
+        yield "<ul>"
+        for link in self.sub_links:
+            yield "<li>%s</li>" % link.to_html()
+        yield "</ul>"
+
+    def to_html(self):
+        return "\n".join(self.chunks())
+
+
+def gen_menu(root, path, dst):
+    menu = Menu(root, [])
+    curr_menu = menu
+    curr_root = root
+    parts = list(path.parts[:-1])
 
     for i in range(len(parts)):
-        root = linkify_directory(
-            Path.joinpath(*parts[:len(parts) - i]),
-            root,
-            )
+        next_menu = None
+        next_root = None
 
-    dst.write('' if root is None else root.to_html())
+        u = parts[:i+1] + ['index.html']
+        p = "/" + join(*u)
+        for link in curr_root.sub:
+            m = Menu(link, [])
+            curr_menu.sub_links.append(m)
+            if link.path == p:
+                next_menu = m
+                next_root = link
+                break
+
+        curr_menu = next_menu
+        curr_root = next_root
+
+    curr_menu.sub_links = [Menu(l, []) for l in curr_root.sub]
+    dst.write('' if root is None else menu.to_html())
 
 
 def main():
+    with open('_g3/tmp/title-index') as f:
+        index = json.load(f)
+        root = Link.from_json(index)
+
     if len(sys.argv) >= 2:
-        menu(Path(sys.argv[1]), sys.stdout)
+        gen_menu(root, Path(sys.argv[1]), sys.stdout)
         return
 
     for src in sys.stdin:
-        src = src.strip()
+        src = src.rstrip('\n')
         src = Path(src)
         dst = Path('_g3/tmp') / (str(src.parent / src.stem) + '.menu')
         dst.parent.mkdir(parents=True, exist_ok=True)
         with dst.open('w') as w:
-            menu(src, w)
+            gen_menu(root, src, w)
 
 
 if __name__ == '__main__':
