@@ -36,7 +36,7 @@ def main():
         return
 
     for path in sys.stdin:
-        html(Path(path.strip()))
+        html(Path(path.rstrip('\n')))
 
 
 if __name__ == '__main__':
