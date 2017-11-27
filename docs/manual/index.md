@@ -69,6 +69,12 @@ newline from the Markdown content. The metadata must contain at least the
 
 ## Viewing Results
 
-You should host a http-server that points to `_g3/dst`. You can still
-view the files as-is without a http-server, but the links generated
-in the nav menu will not work correctly.
+You should host a http-server that points to `_g3/dst`. Alternatively,
+you can still view the files as-is without a http-server, but you will
+need to run the tool in `misc/prefix-gh-pages` in order to make the
+links work by prefixing them:
+
+    $ misc/prefix-gh-pages _g3/dst $(pwd)/_g3/dst
+
+Note that this is an internal build tool and as such should not be
+relied upon -- the command and behaviour may change at any point.
