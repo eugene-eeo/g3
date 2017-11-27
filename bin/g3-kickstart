@@ -13,13 +13,14 @@ cat > _g3/skin.html <<- EOM
   <title>{{ title }}</title>
   <style>
     body     { margin: 5em auto; width: 55em; }
-    .nav     { float: left; width: 18em; }
-    .content { float: left; width: calc(100% - 18em); }
+    nav      { float: left; width: 18em; }
+    article  { float: left; width: calc(100% - 18em); }
+    nav ul   { margin-top: 0; }
   </style>
 </head>
 <body>
-  <div class='nav'>{{{ menu }}}</div>
-  <div class='content'>{{{ content }}}</div>
+  <nav>{{{ menu }}}</nav>
+  <article>{{{ content }}}</article>
 </body>
 </html>
 EOM
