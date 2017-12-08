@@ -49,13 +49,13 @@ def gen_menu(root, path, dst):
     menu = Menu(root, [])
     curr_menu = menu
     curr_root = root
-    parts = list(path.parts[:-1])
+    parts = path.parts[:-1]
 
     for i in range(len(parts)):
         next_menu = None
         next_root = None
 
-        u = parts[:i+1] + ['index.html']
+        u = parts[:i+1] + ('index.html',)
         p = "/" + join(*u)
         for link in curr_root.sub:
             m = Menu(link, [])
