@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>g3 - Configuration Files</title>
+  <meta charset="utf8"/>
+  <link rel="stylesheet" href="/g3/static/style.css"/>
+</head>
+<body>
+  <header>
+    <img src="/g3/static/icon.png" align="left"/>
+    <h1>g3/</h1>
+    <span>simple static site generator</span>
+  </header>
+  <nav><a href="/g3/index.html">Home/</a>
+<ul>
+<li><a href="/g3/manual/index.html">Manual/</a>
+<ul>
+<li><a href="/g3/manual/config.html">Configuration Files</a></li>
+<li><a href="/g3/manual/skins.html">Writing skins</a></li>
+<li><a href="/g3/manual/under-the-hood.html">Under the Hood</a></li>
+</ul></li>
+</ul></nav>
+  <article>
+    <h1>Configuration Files</h1>
+    <p>Configuration files are the <code>_g3/config.json</code> files, which must contain valid
+JSON. An example config is the following:</p>
+
+<pre><code>{
+  "ignore": ["skin.html", "config.json"],
+  "extras": ["footnotes", "tables"]
+}
+</code></pre>
+
+<p>Options available:</p>
+
+<ul>
+<li><p><code>ignore</code> &#8211; an array of glob pattern of files to exclude. For instance,
+writing <code>*.txt</code> will ignore all <code>.txt</code> files in the &#8220;root&#8221; directory.
+<b>Note:</b> this option does not apply to files in the <code>_g3/static</code> folder.</p></li>
+<li><p><code>extras</code> &#8211; an array of extras to use when rendering markdown.
+A full Wiki and a description of what each of these extras do can be
+found <a href="https://github.com/trentm/python-markdown2/wiki/Extras">here</a>.</p></li>
+</ul>
+
+  </article>
+  <footer>
+    Written by <a href="https://github.com/eugene-eeo">Eeo Jun</a>.
+    Built by <a href="/g3/">g3</a>.
+  </footer>
+</body>
+</html>

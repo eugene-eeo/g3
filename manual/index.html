@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>g3 - Manual</title>
+  <meta charset="utf8"/>
+  <link rel="stylesheet" href="/g3/static/style.css"/>
+</head>
+<body>
+  <header>
+    <img src="/g3/static/icon.png" align="left"/>
+    <h1>g3/</h1>
+    <span>simple static site generator</span>
+  </header>
+  <nav><a href="/g3/index.html">Home/</a>
+<ul>
+<li><a href="/g3/manual/index.html">Manual/</a>
+<ul>
+<li><a href="/g3/manual/config.html">Configuration Files</a></li>
+<li><a href="/g3/manual/skins.html">Writing skins</a></li>
+<li><a href="/g3/manual/under-the-hood.html">Under the Hood</a></li>
+</ul></li>
+</ul></nav>
+  <article>
+    <h1>Manual</h1>
+    <p><code>g3</code> is a collection of programs that generate a static site. As such <code>g3</code> aims to make
+it easy to compose them together to play well with your own workflow/project layout.
+However all <code>g3</code> programs will assume that the directory are executed from has a
+<code>_g3</code> folder with the following layout:</p>
+
+<pre><code>_g3/
+    config.json
+    skin.html
+</code></pre>
+
+<p>To get started easily and generate the required directories/files you can run:</p>
+
+<pre><code>$ g3-kickstart
+</code></pre>
+
+<p>In a directory and the <code>_g3</code> directory will be created if one doesn&#8217;t exist.</p>
+
+<ul>
+<li><code>config.json</code> holds the configuration for the project in JSON format. For more
+information on the supported options see the page on <a href="/g3/manual/config.html">config files</a>.</li>
+<li><code>skin.html</code> is a <a href="https://mustache.github.io/">mustache</a> template that is used by
+some <code>g3</code> programs to generate HTML files. For more information on writing your
+own skins for <code>g3</code> see the page on <a href="/g3/manual/skins.html">writing your own skins</a>.</li>
+</ul>
+
+<h2>Important note</h2>
+
+<p>It is important to be working in the right directory. From this point on all
+commands will be assumed to run in the correct directory:</p>
+
+<pre><code>$ ls
+_g3/    ...
+</code></pre>
+
+<p>When <code>g3</code> is running, it is advised <strong>not</strong> to touch the <code>_g3/tmp</code> or <code>_g3/dst</code>
+directories since they hold the temporary build files and the compiled website,
+respectively.</p>
+
+<h2>Compiling</h2>
+
+<p>Run <code>g3-build</code> and you&#8217;ll notice that <code>g3</code> is an almost 1-to-1 mapping of your
+files in the directory to <code>_g3/dst</code>. All <code>.md</code> files will be transformed into <code>.html</code>
+files with the skin applied. Non <code>.md</code> files will just be copied as-is to the
+output directory.</p>
+
+<pre><code>_g3/                |  ...
+    config.json     |  _g3/
+    skin.html       |      config.json
+static/             |      skin.html
+    icon.png        |      dst/
+    style.css       |          static/
+index.md            |              icon.png
+topic/              |              style.css
+    index.md        |          index.html
+    page.md         |          topic/
+                    |              index.html
+                    |              page.html
+</code></pre>
+
+<p>Each <code>.md</code> file must look like the following:</p>
+
+<pre><code>{
+    "title": "Some Title"
+}
+
+your _markdown_ content here.
+</code></pre>
+
+<p>JSON metadata must start from the first line of the file, separated by a
+newline from the Markdown content. The metadata must contain at least the
+<code>title</code> key.</p>
+
+<h2>Viewing Results</h2>
+
+<p>You should host a http-server that points to <code>_g3/dst</code>. Alternatively,
+you can still view the files as-is without a http-server, but you will
+need to run the tool in <code>misc/prefix-gh-pages</code> in order to make the
+links work by prefixing them:</p>
+
+<pre><code>$ misc/prefix-gh-pages _g3/dst $(pwd)/_g3/dst
+</code></pre>
+
+<p>Note that this is an internal build tool and as such should not be
+relied upon &#8211; the command and behaviour may change at any point.</p>
+
+  </article>
+  <footer>
+    Written by <a href="https://github.com/eugene-eeo">Eeo Jun</a>.
+    Built by <a href="/g3/">g3</a>.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>g3 - Under the Hood</title>
+  <meta charset="utf8"/>
+  <link rel="stylesheet" href="/g3/static/style.css"/>
+</head>
+<body>
+  <header>
+    <img src="/g3/static/icon.png" align="left"/>
+    <h1>g3/</h1>
+    <span>simple static site generator</span>
+  </header>
+  <nav><a href="/g3/index.html">Home/</a>
+<ul>
+<li><a href="/g3/manual/index.html">Manual/</a>
+<ul>
+<li><a href="/g3/manual/config.html">Configuration Files</a></li>
+<li><a href="/g3/manual/skins.html">Writing skins</a></li>
+<li><a href="/g3/manual/under-the-hood.html">Under the Hood</a></li>
+</ul></li>
+</ul></nav>
+  <article>
+    <h1>Under the Hood</h1>
+    <p>Under the hood, <code>g3</code> is simply a collection of programs to build a static
+website, held together by some shell scripts (<em>get off my lawn</em>). When
+looking and static site generation and writing <code>g3</code> I wanted to write
+something unix-y so here is the amalgamation I came up with.</p>
+
+<p>Given some file <code>$ref</code>, the tools below will save their output to
+<code>_g3/tmp/$ref.$tool</code>, where <code>$tool</code> is determined by their name, e.g.
+<code>g3-header</code> saves to <code>$ref.header</code>. If they are called with no arguments
+then the paths are taken from stdin.</p>
+
+<ul>
+<li><code>g3-header</code> &#8211; extracts the metadata section of <code>.md</code> files.</li>
+<li><code>g3-render</code> &#8211; renders the actual markdown (after the metadata chunk).</li>
+<li><code>g3-menu</code> &#8211; generates a hierarchical menu.</li>
+</ul>
+
+<p>The following tools are mainly for collecting and building:</p>
+
+<ul>
+<li><code>g3-title-index</code> &#8211; generates a JSON file containing an index of the
+titles of markdown documents. The file generated is used by <code>g3-menu</code>.</li>
+<li><code>g3-html</code> &#8211; combines the <code>.header</code>, <code>.menu</code>, and <code>.render</code> files and
+renders the template. Writes to <code>_g3/dst/&lt;ref&gt;.html</code> if <code>&lt;ref&gt;</code>
+is a markdown file, else just copies it to <code>_g3/dst/&lt;ref&gt;</code>.</li>
+<li><code>g3-copy</code> &#8211; just copies the file to <code>_g3/dst</code>.</li>
+<li><code>g3-walk</code> &#8211; recursively lists files in the directory, respecting the
+options in <code>config.json</code>.</li>
+<li><code>g3-build</code> &#8211; a shell script that combines the tools and builds the
+whole thing.</li>
+</ul>
+
+<p>Misc. tools:</p>
+
+<ul>
+<li><code>g3-kickstart</code> &#8211; sets up a new <code>_g3</code> project in the current directory.</li>
+</ul>
+
+  </article>
+  <footer>
+    Written by <a href="https://github.com/eugene-eeo">Eeo Jun</a>.
+    Built by <a href="/g3/">g3</a>.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>g3 - Writing skins</title>
+  <meta charset="utf8"/>
+  <link rel="stylesheet" href="/g3/static/style.css"/>
+</head>
+<body>
+  <header>
+    <img src="/g3/static/icon.png" align="left"/>
+    <h1>g3/</h1>
+    <span>simple static site generator</span>
+  </header>
+  <nav><a href="/g3/index.html">Home/</a>
+<ul>
+<li><a href="/g3/manual/index.html">Manual/</a>
+<ul>
+<li><a href="/g3/manual/config.html">Configuration Files</a></li>
+<li><a href="/g3/manual/skins.html">Writing skins</a></li>
+<li><a href="/g3/manual/under-the-hood.html">Under the Hood</a></li>
+</ul></li>
+</ul></nav>
+  <article>
+    <h1>Writing skins</h1>
+    <p>A skin is simply the <code>_g3/skin.html</code> file. It must be a valid <a href="https://mustache.github.io">mustache</a>
+template. An example skin:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset='utf8'/&gt;
+  &lt;title&gt;My Blog &#8211; {{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav&gt;{{{ menu }}}&lt;/nav&gt;
+  &lt;article&gt;{{{ content }}}&lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Recall that every <code>.md</code> file in the <code>_g3</code> directory has a metadata header associated
+with it. The keys in those metadata headers are also available for use within the
+template. However, the <code>menu</code> and <code>content</code> variables will take precedence over the
+metadata. They contain a list of links and the rendered markdown, respectively.</p>
+
+<p>Example: you want to have a special <code>author</code> field for each of your articles.
+You could write:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset='utf8'/&gt;
+  &lt;title&gt;My Blog &#8211; {{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav&gt;{{{ menu }}}&lt;/nav&gt;
+  &lt;article&gt;{{{ content }}}&lt;/article&gt;
+  &lt;hr/&gt;
+  Author: {{ author }}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>And in your <code>.md</code> files you should have:</p>
+
+<pre><code>{
+  "title": "On the issues of keming",
+  "author": "Writer McWriteFace"
+}
+
+# On The Issues of Keming
+
+Blah Blah Blah
+</code></pre>
+
+<p>Which would produce the following when rendered:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset='utf8'/&gt;
+  &lt;title&gt;My Blog &#8211; On the issues of keming&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav&gt;...&lt;/nav&gt;
+  &lt;article&gt;
+  &lt;h1&gt;On The Issues of Keming&lt;/h1&gt;
+
+  &lt;p&gt;
+  Blah Blah Blah
+  &lt;/article&gt;
+  &lt;hr/&gt;
+  Author: Writer McWriteFace
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p><a href="https://mustache.github.io/mustache.5.html">Here</a> is a very useful manual
+for mustache templates.</p>
+
+  </article>
+  <footer>
+    Written by <a href="https://github.com/eugene-eeo">Eeo Jun</a>.
+    Built by <a href="/g3/">g3</a>.
+  </footer>
+</body>
+</html>

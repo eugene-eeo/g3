@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>g3 - Home</title>
+  <meta charset="utf8"/>
+  <link rel="stylesheet" href="/g3/static/style.css"/>
+</head>
+<body>
+  <header>
+    <img src="/g3/static/icon.png" align="left"/>
+    <h1>g3/</h1>
+    <span>simple static site generator</span>
+  </header>
+  <nav><a href="/g3/index.html">Home/</a>
+<ul>
+<li><a href="/g3/manual/index.html">Manual/</a></li>
+</ul></nav>
+  <article>
+    <h1>Home</h1>
+    <p>Welcome to the homepage of <code>g3</code>, the simple static site generator. <em>The 3 represents
+the 3 words that start with &#8216;s&#8217; in &#8220;simple static &#8230;&#8221;.</em> <code>g3</code> can be seen as a
+collection of scripts that can be composed together to generate a static website.
+It is inspired by the excellent <a href="http://loup-vaillant.fr/projects/ussm/">ussm</a>.
+I know that <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://blog.getpelican.com/">Pelican</a>
+exist, but I just like building my own.</p>
+
+<p>Currently the workflow is:</p>
+
+<pre><code>$ source alias.sh
+$ vim # or emacs
+$ g3-build
+$ http-server _g3/dst -p 8800 -a localhost -s
+</code></pre>
+
+<h2>Features</h2>
+
+<ul>
+<li>Easily skinnable</li>
+<li>Write your posts in Markdown</li>
+<li>Customisable without knowledge of Python</li>
+<li><em>Very</em> opinionated, may not work for you</li>
+</ul>
+
+<h2>Todo</h2>
+
+<ul>
+<li>Write some tests</li>
+<li>Complete this manual</li>
+<li>More robust error handling</li>
+<li>Better error messages</li>
+</ul>
+
+  </article>
+  <footer>
+    Written by <a href="https://github.com/eugene-eeo">Eeo Jun</a>.
+    Built by <a href="/g3/">g3</a>.
+  </footer>
+</body>
+</html>
