@@ -14,7 +14,7 @@ class Link():
 
     def to_json(self):
         subs = [l.to_json() for l in
-                sorted(self.sub, key=lambda l: l.text)]
+                sorted(self.sub, key=lambda l: l.path)]
         return {
             "path": "/" + self.path + ".html",
             "text": self.text + ("/" if self.sub else ""),
