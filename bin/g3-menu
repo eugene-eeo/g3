@@ -28,9 +28,9 @@ class Link:
 
 
 class Menu:
-    def __init__(self, link, sub_links):
+    def __init__(self, link, sub_links=()):
         self.link = link
-        self.sub_links = sub_links
+        self.sub_links = list(sub_links)
 
     def chunks(self):
         yield self.link.to_html()
@@ -46,7 +46,7 @@ class Menu:
 
 
 def gen_menu(root, path, dst):
-    menu = Menu(root, [])
+    menu = Menu(root)
     curr_menu = menu
     curr_root = root
     parts = path.parts[:-1]
@@ -58,20 +58,19 @@ def gen_menu(root, path, dst):
         u = parts[:i+1] + ('index.html',)
         p = "/" + join(*u)
         for link in curr_root.sub:
-            m = Menu(link, [])
+            m = Menu(link)
             curr_menu.sub_links.append(m)
             if link.path == p:
                 next_menu = m
                 next_root = link
-                break
 
         if next_menu is None:
             break
         curr_menu = next_menu
         curr_root = next_root
 
-    curr_menu.sub_links = [Menu(l, []) for l in curr_root.sub]
-    dst.write('' if root is None else menu.to_html())
+    curr_menu.sub_links = [Menu(l) for l in curr_root.sub]
+    dst.write(menu.to_html())
 
 
 def main():

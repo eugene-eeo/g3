@@ -3,7 +3,6 @@
 from pathlib import Path
 from os.path import join
 import json
-import sys
 
 
 class Link():
@@ -13,19 +12,18 @@ class Link():
         self.sub = []
 
     def to_json(self):
-        subs = [l.to_json() for l in
-                sorted(self.sub, key=lambda l: l.path)]
         return {
-            "path": "/" + self.path + ".html",
+            "path": self.path,
             "text": self.text + ("/" if self.sub else ""),
-            "sub":  subs,
+            "sub":  [l.to_json() for l in
+                     sorted(self.sub, key=lambda l: l.path)],
             }
 
     @classmethod
-    def from_path(cls, p):
+    def from_header_path(cls, p):
         return cls(
             json.load(p.open('r'))['title'],
-            strip_tmp(p.parent / p.stem),
+            '/' + strip_tmp(p.parent / p.stem) + '.html',
             )
 
 
@@ -37,7 +35,7 @@ def strip_tmp(p):
 def links(p):
     for f in p.glob('*.header'):
         if f.is_file() and f.stem != 'index':
-            yield Link.from_path(f)
+            yield Link.from_header_path(f)
 
 
 def traverse(p):
@@ -46,8 +44,8 @@ def traverse(p):
     while Q:
         prev, p = Q.pop()
         f = p / "index.header"
-        if f.exists() and f.is_file():
-            root = Link.from_path(f)
+        if f.is_file():
+            root = Link.from_header_path(f)
             if r is None:
                 r = root
             else:
