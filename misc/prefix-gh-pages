@@ -13,10 +13,16 @@ PAIRS = [
 ]
 
 
-def prefix_link(link, p):
+def prefix_link(link, prefix):
     if link.startswith('/') and not link.startswith('//'):
-        return join(p, link[1:])
+        return join(prefix, link[1:])
     return link
+
+
+def prefix_element(el, attr, prefix):
+    link = el.get(attr)
+    if link is not None:
+        el.attrib[attr] = prefix_link(link, prefix)
 
 
 def main(src, prefix):
@@ -27,15 +33,12 @@ def main(src, prefix):
 
         tmp = Path(str(file) + '.tmp')
         tmp.touch()
-
         with file.open('r') as fp:
             tree = lxml.html.parse(fp)
-            for query, attr in PAIRS:
-                for e in tree.xpath(query):
-                    link = e.get(attr)
-                    if link is None:
-                        continue
-                    e.attrib[attr] = prefix_link(link, prefix)
+
+        for query, attr in PAIRS:
+            for e in tree.xpath(query):
+                prefix_element(e, attr, prefix)
 
         with tmp.open('wb') as w:
             tree.write(w)
