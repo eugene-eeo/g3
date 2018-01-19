@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-from os.path import join
 from pathlib import Path
-from collections import deque
 import json
 
 
@@ -11,13 +9,12 @@ def main():
         config = json.load(fp)
         ignorelist = config.get('ignore', [])
 
-    # BFS traversal of the directory
-    q = deque([Path('.')])
+    q = [Path('.')]
     while q:
-        p = q.popleft()
+        p = q.pop()
+        if p == Path('_g3'):
+            continue
         if p.is_dir():
-            if p == Path('_g3'):
-                continue
             q.extend(p.iterdir())
             continue
         if not any(p.match(pat) for pat in ignorelist):
