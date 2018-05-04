@@ -55,8 +55,7 @@ def gen_menu(root, path, dst):
         next_menu = None
         next_root = None
 
-        u = parts[:i+1] + ('index.html',)
-        p = "/" + join(*u)
+        p = "/" + join(*parts[:i+1], 'index.html')
         for link in curr_root.sub:
             m = Menu(link)
             curr_menu.sub_links.append(m)

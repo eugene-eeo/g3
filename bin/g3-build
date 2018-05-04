@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 trap 'exit' ERR
 
+rm -rf _g3/tmp/
+rm -rf _g3/dst/
+
 for line in $(g3-walk | grep -v '\.md$'); do
     g3-copy "$line"
 done
